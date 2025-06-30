@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} - Flask Blog{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('posts.show_posts') }}">Posts</a></li>
+                <li class="breadcrumb-item active">{{ post.title }}</li>
+            </ol>
+        </nav>
+
+        <article class="blog-post">
+            <header class="mb-4">
+                <h1 class="display-5 fw-bold">{{ post.title }}</h1>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        {% if post.is_published %}
+                            <span class="badge bg-success">Published</span>
+                        {% else %}
+                            <span class="badge bg-warning">Draft</span>
+                        {% endif %}
+                    </div>
+                    <small class="text-muted">
+                        Created: {{ post.created_at.strftime('%B %d, %Y at %I:%M %p') }}
+                        {% if post.updated_at != post.created_at %}
+                            <br>Updated: {{ post.updated_at.strftime('%B %d, %Y at %I:%M %p') }}
+                        {% endif %}
+                    </small>
+                </div>
+                <hr>
+            </header>
+
+            <div class="blog-post-content">
+                <div class="post-body">
+                    {{ post.body|nl2br|safe }}
+                </div>
+            </div>
+        </article>
+
+        <div class="mt-5">
+            <div class="d-flex justify-content-between">
+                <a href="{{ url_for('posts.show_posts') }}" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Posts
+                </a>
+                <div>
+                    <a href="{{ url_for('posts.edit_post', post_id=post.id) }}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Edit Post
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.post-body {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+.post-body p {
+    margin-bottom: 1.5rem;
+}
+</style>
+{% endblock %}
